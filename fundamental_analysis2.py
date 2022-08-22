@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import pandas_datareader as dr
+
 from matplotlib import pyplot as plt
 import seaborn as sns
 import matplotlib.style as style
