@@ -1,7 +1,8 @@
 pandas
 numpy
 matplotlib
-yfinance
 hashlib
 seaborn
-streamlit
+python_dateutil
+streamlit==1.1
+yfinance==0.1.64
