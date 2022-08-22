@@ -19,15 +19,12 @@ from bs4 import BeautifulSoup
 import requests
 import bs4
 import numpy as np
-from urllib.request import urlopen
 import yfinance as yf
 import datetime
 from scipy import stats
-import base64
-from io import BytesIO
 import numpy
 import time
-import hashlib
+
 
 
 
