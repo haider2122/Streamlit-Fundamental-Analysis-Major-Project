@@ -19,12 +19,15 @@ from bs4 import BeautifulSoup
 import requests
 import bs4
 import numpy as np
+from urllib.request import urlopen
 import yfinance as yf
 import datetime
 from scipy import stats
+import base64
+from io import BytesIO
 import numpy
 import time
-
+import hashlib
 
 
 
@@ -105,7 +108,7 @@ full_message_temp ="""
 
 def create_ratios(pl,bl,cfs,multiselect,str_val):
 	pl=pl.transpose()
-	reset_names=["Sales\xa0+","Expenses\xa0+",'Operating Profit','OPM%','Other Income','Profit before tax','Net Profit']
+	reset_names=["Sales\xa0+","Expenses\xa0+",'Operating Profit','OPM%','Other Income\xa0+','Profit before tax','Net Profit']
 	l1=['sales','expenses','opt','opm','oi','pbt','pat']
 	x=0
 	for i in reset_names:
@@ -119,11 +122,13 @@ def create_ratios(pl,bl,cfs,multiselect,str_val):
 
 	pl.rename(columns={'OPM %':'opm'},inplace=True)
 	bl=bl.transpose()
-	b_reset_names=['Share Capital\xa0+','Other Liabilities\xa0+','Total Liabilities','Fixed Assets\xa0+','CWIP','Other Assets\xa0+','Total Assets']
-	new_names=['sharecap','otl','tl','nfa','cwip','oa','ta']	
+	b_reset_names=['Share Capital\xa0+',"Reserves","Borrowings\xa0+",'Other Liabilities\xa0+','Total Liabilities','Fixed Assets\xa0+','CWIP','Other Assets\xa0+','Total Assets']
+	new_names=['sharecap',"Reserves", "Borrowings",'otl','tl','nfa','cwip','oa','ta']	
 	for i in range(7):
 		bl.rename(columns={b_reset_names[i]:new_names[i]},inplace=True)
 	bl.rename(columns={'ol':'otl'},inplace=True)
+	bl.rename(columns={'Other Assets\xa0+':'oa'},inplace=True)
+	bl.rename(columns={'Total Assets':'ta'},inplace=True)
 	cfs=cfs.transpose()
 	cfs_reset_names=['Cash from Operating Activity\xa0+','Cash from Investing Activity\xa0+','Cash from Financing Activity\xa0+','Net Cash Flow']
 	cf_new_names=['cfo','cfi','cff','ncf']
